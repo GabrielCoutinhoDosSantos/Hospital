@@ -1,0 +1,131 @@
+package controle;
+import dominio.Paciente;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+public class ControlaPaciente {
+	private ArrayList<Paciente> pacientes;
+	
+	public ControlaPaciente() {
+		this.pacientes = new ArrayList<>();
+	}
+	
+	public void inserirPaciente(int id, String nome, double peso, double altura, int sexo) {
+		Paciente paciente = new Paciente(id, nome, peso, altura, sexo);
+		pacientes.add(paciente);
+		System.out.println("Produto adicionado com sucesso!");
+	}
+	
+    public void listarPacientes() {
+        if (pacientes.isEmpty()) {
+            System.out.println("Nenhum produto cadastrado.");
+        } else {
+            System.out.println("Lista de Produtos:");
+            for (Paciente paciente : pacientes) {
+                paciente.MostrarDadosPaciente();
+            }
+        }
+    }
+    
+    public void alterarPaciente(int id) {
+        Paciente paciente = buscarProdutoPorId(id);
+        if (paciente != null) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Nome do paciente: ");
+            String novoNome = scanner.nextLine();
+            System.out.print("Peso do paciente: ");
+            double novoPeso = scanner.nextDouble();
+            System.out.print("Altura do paciente: ");
+            double novoAltura = scanner.nextDouble();
+            System.out.print("Sexo do paciente: ");
+            int novoSexo = scanner.nextInt();
+            
+            paciente.setNome(novoNome);
+            paciente.setPeso(novoPeso);
+            paciente.setPeso(novoAltura);
+            paciente.setPeso(novoSexo);
+            System.out.println("Paciente alterado com sucesso!");
+        } else {
+            System.out.println("Paciente com ID " + id + " não encontrado.");
+        }
+    }
+    
+    public void excluirProduto(int id) {
+        Paciente paciente = buscarProdutoPorId(id);
+        if (paciente != null) {
+            pacientes.remove(paciente);
+            System.out.println("Produto excluído com sucesso!");
+        } else {
+            System.out.println("Produto com ID " + id + " não encontrado.");
+        }
+    }
+
+    private Paciente buscarProdutoPorId(int id) {
+        for (Paciente produto : pacientes) {
+            if (produto.getId() == id) {
+                return produto;
+            }
+        }
+        return null;
+    }
+    
+    public static void main(String[] args) {
+        ControlaPaciente controle = new ControlaPaciente();
+        Scanner scanner = new Scanner(System.in);
+        int opcao;
+
+        do {
+            System.out.println("\nMenu:");
+            System.out.println("1. Adicionar Paciente");
+            System.out.println("2. Listar Pacientes");
+            System.out.println("3. Alterar Paciente");
+            System.out.println("4. Excluir Paciente");
+            System.out.println("0. Sair");
+            System.out.print("\nEscolha uma opção: ");
+
+
+            opcao = scanner.nextInt();
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("----------------------------");
+                	System.out.print("\nId do paciente: ");
+                	int id = scanner.nextInt();
+                	scanner.nextLine(); // Limpa o buffer
+                	System.out.print("Nome do paciente: ");
+                    String nome = scanner.nextLine();
+                    System.out.print("Peso do paciente: ");
+                    double peso = scanner.nextDouble();
+                    scanner.nextLine(); // Limpa o buffer
+                    System.out.print("Altura do paciente: ");
+                    double altura = scanner.nextDouble();
+                    scanner.nextLine(); // Limpa o buffer
+                    System.out.print("Sexo do paciente: ");
+                    int sexo = scanner.nextInt();
+                    controle.inserirPaciente(id, nome, peso, altura, sexo);
+                    break;
+                case 2:
+                    controle.listarPacientes();
+                    break;
+                case 3:
+                    System.out.print("ID do Paciente a alterar: ");
+                    int idAlterar = scanner.nextInt();
+                    scanner.nextLine(); // Limpa o buffer
+                    controle.alterarPaciente(idAlterar);
+                    break;
+                case 4:
+                    System.out.print("ID do Paciente a excluir: ");
+                    int idExcluir = scanner.nextInt();
+                    controle.excluirProduto(idExcluir);
+                    break;
+                case 0:
+                    System.out.println("Encerrando o programa.");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
+        } while (opcao != 0);
+
+        scanner.close();
+    }
+}
